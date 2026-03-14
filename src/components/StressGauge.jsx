@@ -1,11 +1,14 @@
 import React from "react";
+import { useTheme } from "../context/ThemeContext";
 
 export default function StressGauge({ score }) {
+  const { theme } = useTheme();
+
   const getColor = (s) => {
-    if (s < 40) return "#22c55e";
-    if (s < 60) return "#eab308";
-    if (s < 80) return "#f97316";
-    return "#ef4444";
+    if (s < 40) return theme.success;
+    if (s < 60) return theme.warning;
+    if (s < 80) return theme.orange;
+    return theme.danger;
   };
 
   const getLabel = (s) => {
@@ -23,20 +26,18 @@ export default function StressGauge({ score }) {
   const gap = circ - dash;
 
   return (
-    <div style={styles.wrap}>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
       <svg width="180" height="130" viewBox="0 0 180 140">
-        {/* Background arc */}
         <circle
           cx="90" cy="100" r={radius}
           fill="none"
-          stroke="rgba(255,255,255,0.06)"
+          stroke={theme.barBg}
           strokeWidth="12"
           strokeDasharray={`${circ * 0.75} ${circ * 0.25}`}
           strokeDashoffset={circ * 0.125}
           strokeLinecap="round"
           transform="rotate(180, 90, 100)"
         />
-        {/* Filled arc */}
         <circle
           cx="90" cy="100" r={radius}
           fill="none"
@@ -48,24 +49,16 @@ export default function StressGauge({ score }) {
           transform="rotate(180, 90, 100)"
           style={{ filter: `drop-shadow(0 0 8px ${color})` }}
         />
-        <text x="90" y="95" textAnchor="middle" fill="#fff" fontSize="32" fontWeight="800">
+        <text x="90" y="95" textAnchor="middle" fill={theme.textPrimary} fontSize="32" fontWeight="800">
           {score}
         </text>
         <text x="90" y="115" textAnchor="middle" fill={color} fontSize="13" fontWeight="600">
           {getLabel(score)}
         </text>
       </svg>
-      <div style={{ color: "#64748b", fontSize: "12px", textAlign: "center", marginTop: "-8px" }}>
+      <div style={{ color: theme.textMuted, fontSize: "12px", textAlign: "center", marginTop: "-8px" }}>
         Stress Score
       </div>
     </div>
   );
 }
-
-const styles = {
-  wrap: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-};

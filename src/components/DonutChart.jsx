@@ -1,4 +1,5 @@
 import React from "react";
+import { useTheme } from "../context/ThemeContext";
 
 function polarToCartesian(cx, cy, r, angleDeg) {
   const rad = ((angleDeg - 90) * Math.PI) / 180;
@@ -13,6 +14,7 @@ function arcPath(cx, cy, r, startAngle, endAngle) {
 }
 
 export default function DonutChart({ segments, size = 130, thickness = 22, centerLabel, centerSub }) {
+  const { theme } = useTheme();
   const cx = size / 2;
   const cy = size / 2;
   const r = (size - thickness) / 2;
@@ -30,8 +32,7 @@ export default function DonutChart({ segments, size = 130, thickness = 22, cente
   return (
     <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-        {/* bg ring */}
-        <circle cx={cx} cy={cy} r={r} fill="none" stroke="rgba(255,255,255,0.05)" strokeWidth={thickness} />
+        <circle cx={cx} cy={cy} r={r} fill="none" stroke={theme.ringBg} strokeWidth={thickness} />
         {arcs.map((arc, i) => (
           <path
             key={i}
@@ -45,17 +46,16 @@ export default function DonutChart({ segments, size = 130, thickness = 22, cente
         ))}
         {centerLabel && (
           <>
-            <text x={cx} y={cy - 2} textAnchor="middle" fill="#fff" fontSize="18" fontWeight="800">{centerLabel}</text>
-            {centerSub && <text x={cx} y={cy + 14} textAnchor="middle" fill="#64748b" fontSize="9">{centerSub}</text>}
+            <text x={cx} y={cy - 2} textAnchor="middle" fill={theme.textPrimary} fontSize="18" fontWeight="800">{centerLabel}</text>
+            {centerSub && <text x={cx} y={cy + 14} textAnchor="middle" fill={theme.textMuted} fontSize="9">{centerSub}</text>}
           </>
         )}
       </svg>
-      {/* Legend */}
       <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
         {segments.map((seg, i) => (
           <div key={i} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
             <div style={{ width: "10px", height: "10px", borderRadius: "3px", background: seg.color, flexShrink: 0, boxShadow: `0 0 5px ${seg.color}88` }} />
-            <span style={{ color: "#94a3b8", fontSize: "11px" }}>{seg.label}</span>
+            <span style={{ color: theme.textSecondary, fontSize: "11px" }}>{seg.label}</span>
             <span style={{ color: seg.color, fontSize: "11px", fontWeight: 700, marginLeft: "auto" }}>{seg.value}%</span>
           </div>
         ))}

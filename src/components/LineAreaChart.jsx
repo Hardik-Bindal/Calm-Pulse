@@ -1,6 +1,8 @@
 import React from "react";
+import { useTheme } from "../context/ThemeContext";
 
 export default function LineAreaChart({ data, dataKey, color = "#6366f1", height = 110, showDots = true, gradient = true }) {
+  const { theme } = useTheme();
   const W = 400;
   const H = height;
   const pad = { top: 10, right: 10, bottom: 24, left: 28 };
@@ -29,37 +31,32 @@ export default function LineAreaChart({ data, dataKey, color = "#6366f1", height
         </linearGradient>
       </defs>
 
-      {/* Horizontal grid lines */}
       {[0, 0.25, 0.5, 0.75, 1].map((t, i) => {
         const y = pad.top + t * innerH;
         const val = Math.round(max - t * (max - min));
         return (
           <g key={i}>
             <line x1={pad.left} y1={y} x2={W - pad.right} y2={y}
-              stroke="rgba(255,255,255,0.05)" strokeWidth="1" strokeDasharray="3 4" />
+              stroke={theme.chartGrid} strokeWidth="1" strokeDasharray="3 4" />
             {i % 2 === 0 && (
-              <text x={pad.left - 4} y={y + 4} textAnchor="end" fill="#475569" fontSize="9">{val}</text>
+              <text x={pad.left - 4} y={y + 4} textAnchor="end" fill={theme.chartLabel} fontSize="9">{val}</text>
             )}
           </g>
         );
       })}
 
-      {/* Area fill */}
       {gradient && <path d={areaPath} fill={`url(#${gradId})`} />}
 
-      {/* Line */}
       <path d={linePath} fill="none" stroke={color} strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
         style={{ filter: `drop-shadow(0 0 4px ${color}88)` }} />
 
-      {/* Dots */}
       {showDots && points.map((p, i) => (
-        <circle key={i} cx={p.x} cy={p.y} r="3.5" fill={color} stroke="#0f172a" strokeWidth="1.5"
+        <circle key={i} cx={p.x} cy={p.y} r="3.5" fill={color} stroke={theme.dotStroke} strokeWidth="1.5"
           style={{ filter: `drop-shadow(0 0 3px ${color})` }} />
       ))}
 
-      {/* X-axis labels */}
       {data.map((d, i) => (
-        <text key={i} x={xScale(i)} y={H - 4} textAnchor="middle" fill="#475569" fontSize="9">
+        <text key={i} x={xScale(i)} y={H - 4} textAnchor="middle" fill={theme.chartLabel} fontSize="9">
           {d.day || d.hour}
         </text>
       ))}
