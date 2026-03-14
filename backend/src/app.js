@@ -4,6 +4,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const connectDB = require('./db/index');
 const chatRoutes = require('./routes/chat.routes');
+const gamesRouter = require('./routes/games.routes');
+
 
 const app = express();
 
@@ -17,6 +19,7 @@ connectDB();
 
 // Routes
 app.use('/api/chat', chatRoutes);
+app.use('/api/games', gamesRouter);
 
 // Base route
 app.get('/', (req, res) => {
