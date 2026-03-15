@@ -193,7 +193,7 @@ export default function Camera() {
     if (!hasConsent) return;
     setLoadingAi(true);
     try {
-      const res = await fetch("http://localhost:5001/api/stress/analyze", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5001"}/api/stress/analyze`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

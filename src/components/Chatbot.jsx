@@ -29,7 +29,7 @@ export default function Chatbot({ open, onClose }) {
     setLoading(true);
 
     try {
-      const res = await fetch("http://localhost:5001/api/chat/message", {
+      const res = await fetch(`${process.env.REACT_APP_API_URL || "http://localhost:5001"}/api/chat/message`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: msg }),

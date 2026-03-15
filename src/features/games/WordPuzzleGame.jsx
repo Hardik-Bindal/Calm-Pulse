@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import { useTheme } from "../../themes/ThemeContext";
 
-const API = "http://localhost:5001/api/games";
+const API = `${process.env.REACT_APP_API_URL || "http://localhost:5001"}/api/games`;
 const TIME_LIMIT = 30;
 
 export default function WordPuzzleGame({ onBack }) {
