@@ -15,10 +15,15 @@ const sendMessage = async (req, res) => {
     const response = await getChatResponse(message);
     console.log('Got AI response:', response?.substring(0, 50));
 
-    // Save to MongoDB
-    const chat = new ChatHistory({ message, response });
-    const saved = await chat.save();
-    console.log('Saved to MongoDB:', saved._id);
+    // Save to MongoDB only if connected
+    const mongoose = require('mongoose');
+    if (mongoose.connection.readyState === 1) {
+      const chat = new ChatHistory({ message, response });
+      const saved = await chat.save();
+      console.log('Saved to MongoDB:', saved._id);
+    } else {
+      console.log('MongoDB not connected, skipping chat save.');
+    }
 
     res.status(200).json({ response });
 
