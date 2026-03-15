@@ -24,7 +24,7 @@ const getChatResponse = async (userMessage) => {
       messages: [
         {
           role: 'system',
-          content: 'You are a calming mental wellness assistant for StressGuard AI. Help users manage stress with empathy and practical advice. Keep responses warm, helpful and under 100 words.'
+          content: 'You are a calming mental wellness assistant for Calm Pulse. Help users manage stress with empathy and practical advice. Keep responses warm, helpful and under 100 words.'
         },
         {
           role: 'user',

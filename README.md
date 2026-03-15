@@ -1,4 +1,4 @@
-# 🛡️ StressGuard AI — Wellness Platform
+# 🌊 Calm Pulse — Wellness Platform
 
 A modern, AI-powered stress detection and wellness management platform built with React. Designed for **students** and **working professionals** to track, understand, and manage their stress patterns.
 
@@ -52,8 +52,8 @@ A modern, AI-powered stress detection and wellness management platform built wit
 
 ```bash
 # Clone the repository
-git clone https://github.com/your-username/stressguard-ai.git
-cd stressguard-ai
+git clone https://github.com/your-username/calm-pulse.git
+cd calm-pulse
 
 # Install dependencies
 npm install

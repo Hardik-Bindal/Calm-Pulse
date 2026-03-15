@@ -72,7 +72,7 @@ export default function Dashboard() {
               <div style={{ color: theme.textMuted, fontSize: "11px", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px", marginBottom: "2px" }}>
                 {s.label}
               </div>
-              <div style={{ color: theme.textPrimary, fontSize: "22px", fontWeight: 800, lineHeight: 1, color: s.color }}>
+              <div style={{ color: s.color, fontSize: "22px", fontWeight: 800, lineHeight: 1 }}>
                 {s.value}<span style={{ fontSize: "13px", fontWeight: 500, color: theme.textMuted, marginLeft: "2px" }}>{s.unit}</span>
               </div>
               <div style={{ color: theme.textDim, fontSize: "11px", marginTop: "2px" }}>{s.sub}</div>

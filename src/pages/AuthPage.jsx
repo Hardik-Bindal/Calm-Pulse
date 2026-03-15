@@ -1,10 +1,33 @@
 import React, { useState } from "react";
 import { useTheme } from "../themes/ThemeContext";
+import { useGoogleLogin } from '@react-oauth/google';
+import { useMsal } from '@azure/msal-react';
 
 export default function AuthPage({ onLogin }) {
   const { theme, isDark } = useTheme();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const { instance } = useMsal();
+
+  const handleGoogleLogin = useGoogleLogin({
+    onSuccess: tokenResponse => {
+      console.log("Google Login Success:", tokenResponse);
+      onLogin(); // Simulate successful auth flow
+    },
+    onError: error => console.error("Google Login Failed:", error)
+  });
+
+  const handleMicrosoftLogin = () => {
+    instance.loginPopup({
+      scopes: ["User.Read"]
+    }).then(response => {
+      console.log("Microsoft Login Success:", response);
+      onLogin();
+    }).catch(e => {
+      console.error("Microsoft Login Failed:", e);
+    });
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -33,17 +56,17 @@ export default function AuthPage({ onLogin }) {
       }}>
         {/* Logo */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{ fontSize: "40px", marginBottom: "12px" }}>🛡️</div>
+          <div style={{ fontSize: "40px", marginBottom: "12px" }}>🌊</div>
           <h1 style={{
             color: theme.textPrimary,
             fontSize: "24px",
             fontWeight: 800,
             margin: "0 0 6px",
           }}>
-            StressGuard AI
+            Calm Pulse
           </h1>
           <p style={{ color: theme.textMuted, fontSize: "13px", margin: 0 }}>
-            Your personal stress management companion
+            Your personal stress & wellness companion
           </p>
         </div>
 
@@ -127,9 +150,9 @@ export default function AuthPage({ onLogin }) {
           <div style={{ flex: 1, height: "1px", background: theme.cardBorder }} />
         </div>
 
-        {/* Google Sign In (UI only) */}
+        {/* Google Sign In */}
         <button
-          onClick={() => {}}
+          onClick={() => handleGoogleLogin()}
           style={{
             width: "100%",
             padding: "12px",
@@ -145,10 +168,40 @@ export default function AuthPage({ onLogin }) {
             justifyContent: "center",
             gap: "10px",
             marginBottom: "12px",
+            transition: "background 0.2s ease"
           }}
+          onMouseOver={(e) => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.08)" : "#f9fafb"}
+          onMouseOut={(e) => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.04)" : "#fff"}
         >
           <span style={{ fontSize: "18px" }}>G</span>
           Sign in with Google
+        </button>
+
+        {/* Microsoft Sign In */}
+        <button
+          onClick={handleMicrosoftLogin}
+          style={{
+            width: "100%",
+            padding: "12px",
+            borderRadius: "12px",
+            border: `1px solid ${theme.cardBorder}`,
+            background: isDark ? "rgba(255,255,255,0.04)" : "#fff",
+            color: theme.textPrimary,
+            fontSize: "14px",
+            fontWeight: 600,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: "10px",
+            marginBottom: "12px",
+            transition: "background 0.2s ease"
+          }}
+          onMouseOver={(e) => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.08)" : "#f9fafb"}
+          onMouseOut={(e) => e.currentTarget.style.background = isDark ? "rgba(255,255,255,0.04)" : "#fff"}
+        >
+          <span style={{ fontSize: "18px", color: "#00a4ef" }}>⊞</span>
+          Sign in with Microsoft
         </button>
 
         {/* Sample Login */}

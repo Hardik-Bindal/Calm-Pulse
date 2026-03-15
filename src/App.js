@@ -7,6 +7,7 @@ import Dashboard from "./features/Dashboard";
 import Games from "./features/Games";
 import Camera from "./features/Camera";
 import Placeholder from "./features/Placeholder";
+import StressCheck from "./features/StressCheck";
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -28,6 +29,7 @@ export default function App() {
       case "dashboard": return <Dashboard />;
       case "games":     return <Games />;
       case "camera":    return <Camera />;
+      case "stress-check": return <StressCheck />;
       case "explore":   return <Placeholder />;
       default:          return <Dashboard />;
     }

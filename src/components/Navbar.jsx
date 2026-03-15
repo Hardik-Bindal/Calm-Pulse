@@ -5,6 +5,7 @@ const NAV_LINKS = [
   { id: "dashboard", label: "Dashboard", icon: "◼" },
   { id: "games", label: "Games", icon: "◈" },
   { id: "camera", label: "Camera", icon: "◉" },
+  { id: "stress-check", label: "Stress Check", icon: "🧠" },
   { id: "explore", label: "Explore", icon: "◆" },
 ];
 
@@ -35,10 +36,10 @@ export default function Navbar({ active, onNavigate, onLogout, chatOpen, onToggl
           display: "flex", alignItems: "center", justifyContent: "center",
           fontSize: "16px", boxShadow: `0 4px 12px ${theme.accentGlow}`,
         }}>
-          🛡️
+          🌊
         </div>
         <span style={{ color: theme.textPrimary, fontSize: "15px", fontWeight: 800, letterSpacing: "-0.3px" }}>
-          StressGuard <span style={{ color: theme.accentLight, fontWeight: 400 }}>AI</span>
+          Calm Pulse
         </span>
       </div>
 
