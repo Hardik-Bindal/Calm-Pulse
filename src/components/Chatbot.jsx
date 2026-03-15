@@ -6,7 +6,7 @@ const PANEL_WIDTH = 360;
 export default function Chatbot({ open, onClose }) {
   const { theme, isDark } = useTheme();
   const [messages, setMessages] = useState([
-    { role: "bot", text: "Hi there! 👋 I'm your StressGuard assistant. How are you feeling today?" },
+    { role: "bot", text: "Hi there! 👋 I'm your Calm Pulse assistant. How are you feeling today?" },
   ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);

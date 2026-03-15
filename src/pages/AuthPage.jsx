@@ -63,7 +63,7 @@ export default function AuthPage({ onLogin }) {
             fontWeight: 800,
             margin: "0 0 6px",
           }}>
-            StressGuard AI
+            Calm Pulse
           </h1>
           <p style={{ color: theme.textMuted, fontSize: "13px", margin: 0 }}>
             Your personal stress management companion
