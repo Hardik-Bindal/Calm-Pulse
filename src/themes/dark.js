@@ -26,7 +26,7 @@ const dark = {
   accent: "#2d7d6e",
   accentLight: "#3f9a8a",
   accentLighter: "#7dd3c7",
-  accentGradient: "none",
+  accentGradient: "linear-gradient(135deg, #2d7d6e, #3f9a8a)",
   accentGlow: "rgba(45,125,110,0.12)",
 
   success: "#4d9f70",
