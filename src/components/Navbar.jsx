@@ -39,7 +39,7 @@ export default function Navbar({ active, onNavigate, onLogout, chatOpen, onToggl
           🌊
         </div>
         <span style={{ color: theme.textPrimary, fontSize: "15px", fontWeight: 800, letterSpacing: "-0.3px" }}>
-          Calm Pulse
+          Calm <span style={{ color: theme.accentLight, fontWeight: 400 }}>Pulse</span>
         </span>
       </div>
 
