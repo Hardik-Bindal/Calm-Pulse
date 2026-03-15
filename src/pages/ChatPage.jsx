@@ -24,7 +24,7 @@ export default function ChatPage({ mode }) {
 
     try {
       // Call your backend API
-      const res = await fetch("http://localhost:5000/api/chat/message", {
+      const res = await fetch("http://localhost:5001/api/chat/message", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ message: input }),

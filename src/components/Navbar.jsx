@@ -11,6 +11,7 @@ export default function Navbar({ mode, activePage, onNavigate, onLogout }) {
     { id: "mood", label: "Mood Tracker", icon: "😊" },
     { id: "sleep", label: "Sleep Log", icon: "🌙" },
     { id: "dna", label: "Stress DNA", icon: "🧬" },
+    { id: "games", label: "Games", icon: "🎮" },
     { id: "chat", label: "AI Chat", icon: "💬" },
   ];
 
@@ -20,6 +21,7 @@ export default function Navbar({ mode, activePage, onNavigate, onLogout }) {
     { id: "worklife", label: "Work-Life", icon: "⚖️" },
     { id: "weekprep", label: "Week Prep", icon: "🗓️" },
     { id: "dna", label: "Stress DNA", icon: "🧬" },
+    { id: "games", label: "Games", icon: "🎮" },
     { id: "chat", label: "AI Chat", icon: "💬" },
   ];
 

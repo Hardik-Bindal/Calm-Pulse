@@ -12,6 +12,7 @@ import StudyPlanPage from "./pages/StudyPlanPage";
 import MeetingsPage from "./pages/MeetingsPage";
 import WorkLifePage from "./pages/WorkLifePage";
 import WeekPrepPage from "./pages/WeekPrepPage";
+import GamesPage from "./pages/GamesPage";
 
 export default function App() {
   const [mode, setMode] = useState(null);
@@ -42,6 +43,7 @@ export default function App() {
         case "mood": return <MoodPage />;
         case "sleep": return <SleepPage />;
         case "dna": return <StressDNAPage mode={mode} />;
+        case "games": return <GamesPage />;
         case "chat": return <ChatPage mode={mode} />;
         default: return <StudentDashboard />;
       }
@@ -52,6 +54,7 @@ export default function App() {
         case "worklife": return <WorkLifePage />;
         case "weekprep": return <WeekPrepPage />;
         case "dna": return <StressDNAPage mode={mode} />;
+        case "games": return <GamesPage />;
         case "chat": return <ChatPage mode={mode} />;
         default: return <WorkDashboard />;
       }
