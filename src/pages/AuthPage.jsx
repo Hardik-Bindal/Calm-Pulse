@@ -56,17 +56,17 @@ export default function AuthPage({ onLogin }) {
       }}>
         {/* Logo */}
         <div style={{ textAlign: "center", marginBottom: "32px" }}>
-          <div style={{ fontSize: "40px", marginBottom: "12px" }}>🌊</div>
+          <div style={{ fontSize: "40px", marginBottom: "12px" }}>🛡️</div>
           <h1 style={{
             color: theme.textPrimary,
             fontSize: "24px",
             fontWeight: 800,
             margin: "0 0 6px",
           }}>
-            Calm Pulse
+            StressGuard AI
           </h1>
           <p style={{ color: theme.textMuted, fontSize: "13px", margin: 0 }}>
-            Your personal stress & wellness companion
+            Your personal stress management companion
           </p>
         </div>
 

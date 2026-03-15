@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 # 🌊 Calm Pulse — Wellness Platform
+=======
+# 🛡️ Calm Pulse — Wellness Platform
+>>>>>>> 6cdb9f1 (Rename project from StressGuard AI to Calm Pulse)
 
 A modern, AI-powered stress detection and wellness management platform built with React. Designed for **students** and **working professionals** to track, understand, and manage their stress patterns.
 
