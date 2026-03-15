@@ -1,5 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTheme } from "../themes/ThemeContext";
+import MemoryCardGame from "./games/MemoryCardGame";
+import BreathingGame from "./games/BreathingGame";
+import WordPuzzleGame from "./games/WordPuzzleGame";
 
 const GAMES = [
   { id: "memory", name: "Memory Cards", icon: "🃏", desc: "Flip and match pairs to sharpen your focus", difficulty: "Medium", color: "#14b8a6" },
@@ -15,7 +18,14 @@ const TIPS = [
 
 export default function Games() {
   const { theme, isDark } = useTheme();
+  const [activeGame, setActiveGame] = useState(null);
 
+  // Render the selected game
+  if (activeGame === "memory") return <MemoryCardGame onBack={() => setActiveGame(null)} />;
+  if (activeGame === "breathing") return <BreathingGame onBack={() => setActiveGame(null)} />;
+  if (activeGame === "word") return <WordPuzzleGame onBack={() => setActiveGame(null)} />;
+
+  // Game selection menu
   return (
     <div style={{ animation: "fadeIn 0.4s ease" }}>
       <div style={{ marginBottom: "24px" }}>
@@ -72,19 +82,21 @@ export default function Games() {
 
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: "8px" }}>
               <h3 style={{ color: theme.textPrimary, fontSize: "16px", fontWeight: 700, margin: 0 }}>{game.name}</h3>
-              <span style={{
-                padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 700,
-                background: game.color + "18", color: game.color,
-              }}>{game.difficulty}</span>
+              <span style={{ padding: "3px 10px", borderRadius: "20px", fontSize: "11px", fontWeight: 700, background: game.color + "18", color: game.color }}>
+                {game.difficulty}
+              </span>
             </div>
             <p style={{ color: theme.textSecondary, fontSize: "13px", lineHeight: 1.6, margin: "0 0 18px" }}>{game.desc}</p>
 
-            <button style={{
-              width: "100%", padding: "10px", borderRadius: "10px", border: "none",
-              background: `linear-gradient(135deg, ${game.color}, ${game.color}cc)`,
-              color: "#fff", fontSize: "13px", fontWeight: 700, cursor: "pointer",
-              boxShadow: `0 4px 14px ${game.color}35`,
-            }}>
+            <button
+              onClick={() => setActiveGame(game.id)}
+              style={{
+                width: "100%", padding: "10px", borderRadius: "10px", border: "none",
+                background: `linear-gradient(135deg, ${game.color}, ${game.color}cc)`,
+                color: "#fff", fontSize: "13px", fontWeight: 700, cursor: "pointer",
+                boxShadow: `0 4px 14px ${game.color}35`,
+              }}
+            >
               Play Now ▶
             </button>
           </div>

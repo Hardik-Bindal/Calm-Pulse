@@ -147,12 +147,13 @@ function getWordPuzzleChallenge() {
 }
 
 function checkWordPuzzleAnswer(scrambled, attempt) {
-  const match = WORD_BANK.find(
-    (w) =>
-      w.toLowerCase() === attempt.toLowerCase() &&
-      w.split('').sort().join('') === scrambled.split('').sort().join(''),
+  const correctWord = WORD_BANK.find(
+    (w) => w.split('').sort().join('') === scrambled.split('').sort().join('')
   );
-  return { correct: !!match, answer: match || null };
+  
+  const isCorrect = !!correctWord && correctWord.toLowerCase() === attempt.toLowerCase();
+  
+  return { correct: isCorrect, answer: correctWord || null };
 }
 
 async function saveScore(userId, gameName, score) {
