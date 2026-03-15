@@ -54,10 +54,20 @@ export default function WordPuzzleGame({ onBack }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isActive, timer]);
 
-  const handleTimeUp = () => {
+  const handleTimeUp = async () => {
     setIsActive(false);
     setStreak(0);
-    setFeedback({ correct: false, answer: null, timedOut: true });
+    try {
+      const res = await fetch(`${API}/verify-word`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ scrambled, attempt: "" }),
+      });
+      const data = await res.json();
+      setFeedback({ correct: false, answer: data.data?.answer || null, timedOut: true });
+    } catch {
+      setFeedback({ correct: false, answer: null, timedOut: true });
+    }
   };
 
   const submit = async () => {
