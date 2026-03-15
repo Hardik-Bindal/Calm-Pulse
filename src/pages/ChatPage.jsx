@@ -2,35 +2,52 @@ import React, { useState, useRef, useEffect } from "react";
 import { useTheme } from "../context/ThemeContext";
 import { chatMessages } from "../data/sampleData";
 
-const botResponses = [
-  "I hear you. That sounds stressful. Have you tried the 4-7-8 breathing technique? It really helps in the moment.",
-  "Your stress patterns show you tend to peak around exam week. Let's build a plan to ease that. 📋",
-  "Remember — progress, not perfection. You've already done more than you think. 💪",
-  "Would you like me to suggest a 5-minute mindfulness exercise right now?",
-  "It's okay to feel overwhelmed sometimes. Would you like to talk about what's stressing you the most?",
-];
-
 export default function ChatPage({ mode }) {
   const { theme, isDark } = useTheme();
   const [messages, setMessages] = useState(chatMessages);
   const [input, setInput] = useState("");
   const [lang, setLang] = useState("English");
+  const [isLoading, setIsLoading] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  const send = () => {
+  const send = async () => {
     if (!input.trim()) return;
+
     const userMsg = { role: "user", text: input };
-    const botMsg = {
-      role: "bot",
-      text: botResponses[Math.floor(Math.random() * botResponses.length)],
-    };
     setMessages((prev) => [...prev, userMsg]);
-    setTimeout(() => setMessages((prev) => [...prev, botMsg]), 800);
     setInput("");
+    setIsLoading(true);
+
+    try {
+      // Call your backend API
+      const res = await fetch("http://localhost:5000/api/chat/message", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ message: input }),
+      });
+
+      const data = await res.json();
+
+      const botMsg = {
+        role: "bot",
+        text: data.response,
+      };
+      setMessages((prev) => [...prev, botMsg]);
+
+    } catch (error) {
+      console.error("Error:", error);
+      const botMsg = {
+        role: "bot",
+        text: "Sorry, I'm having trouble connecting right now. Please try again! 💙",
+      };
+      setMessages((prev) => [...prev, botMsg]);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -133,6 +150,37 @@ export default function ChatPage({ mode }) {
               </div>
             </div>
           ))}
+
+          {/* Loading indicator */}
+          {isLoading && (
+            <div style={{
+              display: "flex",
+              alignItems: "flex-end",
+              gap: "8px",
+            }}>
+              <div style={{
+                fontSize: "18px",
+                flexShrink: 0,
+                background: isDark ? "rgba(99,102,241,0.15)" : "rgba(99,102,241,0.1)",
+                width: "32px",
+                height: "32px",
+                borderRadius: "50%",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}>🛡️</div>
+              <div style={{
+                padding: "12px 16px",
+                borderRadius: "16px",
+                fontSize: "14px",
+                background: isDark ? "rgba(99,102,241,0.12)" : "rgba(99,102,241,0.06)",
+                border: `1px solid ${isDark ? "rgba(99,102,241,0.2)" : "rgba(99,102,241,0.12)"}`,
+                color: theme.textMuted,
+              }}>
+                Thinking... 💭
+              </div>
+            </div>
+          )}
           <div ref={bottomRef} />
         </div>
 
@@ -147,6 +195,7 @@ export default function ChatPage({ mode }) {
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && send()}
             placeholder={lang === "Hindi" ? "यहाँ टाइप करें..." : "Type how you're feeling..."}
+            disabled={isLoading}
             style={{
               flex: 1,
               background: theme.inputBg,
@@ -158,20 +207,28 @@ export default function ChatPage({ mode }) {
               outline: "none",
               backdropFilter: isDark ? "none" : "blur(8px)",
               transition: "all 0.2s",
+              opacity: isLoading ? 0.7 : 1,
             }}
           />
-          <button onClick={send} style={{
-            background: theme.accentGradient,
-            border: "none",
-            borderRadius: "14px",
-            padding: "12px 20px",
-            color: "#fff",
-            fontSize: "14px",
-            fontWeight: 600,
-            cursor: "pointer",
-            boxShadow: `0 4px 14px ${theme.accent}44`,
-            transition: "all 0.2s",
-          }}>Send →</button>
+          <button
+            onClick={send}
+            disabled={isLoading}
+            style={{
+              background: theme.accentGradient,
+              border: "none",
+              borderRadius: "14px",
+              padding: "12px 20px",
+              color: "#fff",
+              fontSize: "14px",
+              fontWeight: 600,
+              cursor: isLoading ? "not-allowed" : "pointer",
+              boxShadow: `0 4px 14px ${theme.accent}44`,
+              transition: "all 0.2s",
+              opacity: isLoading ? 0.7 : 1,
+            }}
+          >
+            {isLoading ? "..." : "Send →"}
+          </button>
         </div>
       </div>
 
