@@ -274,6 +274,7 @@ export default function Camera() {
     if (!hasConsent && !requestingPermissions) {
       requestPermissions();
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
