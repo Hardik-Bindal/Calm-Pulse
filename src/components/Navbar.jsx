@@ -1,165 +1,148 @@
 import React from "react";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../themes/ThemeContext";
 
-export default function Navbar({ mode, activePage, onNavigate, onLogout }) {
+const NAV_LINKS = [
+  { id: "dashboard", label: "Dashboard", icon: "◼" },
+  { id: "games", label: "Games", icon: "◈" },
+  { id: "camera", label: "Camera", icon: "◉" },
+  { id: "explore", label: "Explore", icon: "◆" },
+];
+
+export default function Navbar({ active, onNavigate, onLogout, chatOpen, onToggleChat }) {
   const { theme, isDark, toggleTheme } = useTheme();
-  const isStudent = mode === "academic";
-
-  const studentLinks = [
-    { id: "dashboard", label: "Dashboard", icon: "📊" },
-    { id: "studyplan", label: "Study Plan", icon: "📅" },
-    { id: "mood", label: "Mood Tracker", icon: "😊" },
-    { id: "sleep", label: "Sleep Log", icon: "🌙" },
-    { id: "dna", label: "Stress DNA", icon: "🧬" },
-    { id: "games", label: "Games", icon: "🎮" },
-    { id: "chat", label: "AI Chat", icon: "💬" },
-  ];
-
-  const workLinks = [
-    { id: "dashboard", label: "Dashboard", icon: "📊" },
-    { id: "meetings", label: "Meetings", icon: "📅" },
-    { id: "worklife", label: "Work-Life", icon: "⚖️" },
-    { id: "weekprep", label: "Week Prep", icon: "🗓️" },
-    { id: "dna", label: "Stress DNA", icon: "🧬" },
-    { id: "games", label: "Games", icon: "🎮" },
-    { id: "chat", label: "AI Chat", icon: "💬" },
-  ];
-
-  const links = isStudent ? studentLinks : workLinks;
 
   return (
-    <nav style={{
-      width: "230px",
-      minHeight: "100vh",
+    <header style={{
+      height: "60px",
       background: isDark ? theme.navBg : theme.navBg,
-      backdropFilter: isDark ? "none" : theme.glassBlur,
-      WebkitBackdropFilter: isDark ? "none" : theme.glassBlur,
-      borderRight: `1px solid ${theme.navBorder}`,
+      backdropFilter: theme.glassBlur,
+      WebkitBackdropFilter: theme.glassBlur,
+      borderBottom: `1px solid ${theme.navBorder}`,
       display: "flex",
-      flexDirection: "column",
-      padding: "24px 16px",
-      gap: "4px",
+      alignItems: "center",
+      padding: "0 24px",
+      gap: "0",
       flexShrink: 0,
-      transition: "all 0.4s ease",
+      position: "sticky",
+      top: 0,
+      zIndex: 100,
     }}>
       {/* Logo */}
-      <div style={{
-        display: "flex",
-        alignItems: "center",
-        gap: "10px",
-        marginBottom: "12px",
-        fontSize: "22px",
-      }}>
-        <span>🛡️</span>
-        <div>
-          <div style={{
-            color: theme.textPrimary,
-            fontSize: "15px",
-            fontWeight: 800,
-            lineHeight: 1.2,
-            transition: "color 0.3s",
-          }}>StressGuard AI</div>
-          <div style={{
-            color: theme.accent,
-            fontSize: "11px",
-            fontWeight: 600,
-          }}>
-            {isStudent ? "🎓 Academic" : "💼 Workplace"}
-          </div>
+      <div style={{ display: "flex", alignItems: "center", gap: "10px", marginRight: "32px" }}>
+        <div style={{
+          width: "32px", height: "32px", borderRadius: "10px",
+          background: theme.accentGradient,
+          display: "flex", alignItems: "center", justifyContent: "center",
+          fontSize: "16px", boxShadow: `0 4px 12px ${theme.accentGlow}`,
+        }}>
+          🛡️
         </div>
+        <span style={{ color: theme.textPrimary, fontSize: "15px", fontWeight: 800, letterSpacing: "-0.3px" }}>
+          StressGuard <span style={{ color: theme.accentLight, fontWeight: 400 }}>AI</span>
+        </span>
       </div>
 
-      {/* Theme Toggle */}
-      <button
-        onClick={toggleTheme}
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: "8px",
-          padding: "10px 14px",
-          borderRadius: "12px",
-          border: `1px solid ${theme.cardBorder}`,
-          background: isDark
-            ? "rgba(255,255,255,0.04)"
-            : "rgba(99,102,241,0.08)",
-          color: theme.textSecondary,
-          fontSize: "12px",
-          fontWeight: 600,
-          cursor: "pointer",
-          marginBottom: "20px",
-          transition: "all 0.3s ease",
-        }}
-      >
-        <span style={{ fontSize: "16px" }}>{isDark ? "☀️" : "🌙"}</span>
-        <span>{isDark ? "Light Mode" : "Dark Mode"}</span>
-      </button>
-
-      {/* Links */}
-      <div style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: "4px",
-        flex: 1,
-      }}>
-        {links.map((link, i) => (
+      {/* Nav links */}
+      <nav style={{ display: "flex", alignItems: "center", gap: "4px", flex: 1 }}>
+        {NAV_LINKS.map((link) => (
           <button
             key={link.id}
             onClick={() => onNavigate(link.id)}
             style={{
+              padding: "7px 16px",
+              borderRadius: "8px",
+              border: "none",
+              background: active === link.id ? theme.navActive : "transparent",
+              color: active === link.id ? theme.navActiveText : theme.navLink,
+              fontSize: "13px",
+              fontWeight: active === link.id ? 700 : 500,
+              cursor: "pointer",
               display: "flex",
               alignItems: "center",
-              gap: "10px",
-              padding: "11px 14px",
-              borderRadius: "12px",
-              border: "none",
-              background: activePage === link.id
-                ? theme.navLinkActive
-                : "transparent",
-              color: activePage === link.id
-                ? theme.navLinkActiveText
-                : theme.navLinkColor,
-              fontSize: "13px",
-              fontWeight: activePage === link.id ? 700 : 500,
-              cursor: "pointer",
-              textAlign: "left",
+              gap: "6px",
               transition: "all 0.2s ease",
-              animation: `slideInLeft 0.3s ease ${i * 0.05}s both`,
+              position: "relative",
             }}
           >
-            <span>{link.icon}</span>
-            <span>{link.label}</span>
-            {activePage === link.id && (
+            {link.label}
+            {active === link.id && (
               <div style={{
-                width: "4px",
-                height: "4px",
-                borderRadius: "50%",
-                background: theme.accent,
-                marginLeft: "auto",
-                boxShadow: `0 0 6px ${theme.accent}`,
+                position: "absolute",
+                bottom: "-1px",
+                left: "50%",
+                transform: "translateX(-50%)",
+                width: "20px",
+                height: "2px",
+                borderRadius: "2px 2px 0 0",
+                background: theme.accentLight,
               }} />
             )}
           </button>
         ))}
-      </div>
+      </nav>
 
-      {/* Logout */}
-      <button onClick={onLogout} style={{
-        background: isDark
-          ? "rgba(255,255,255,0.03)"
-          : "rgba(0,0,0,0.04)",
-        border: `1px solid ${theme.cardBorder}`,
-        borderRadius: "12px",
-        color: theme.textMuted,
-        fontSize: "12px",
-        fontWeight: 600,
-        padding: "10px",
-        cursor: "pointer",
-        marginTop: "16px",
-        transition: "all 0.3s ease",
-      }}>
-        ← Logout
-      </button>
-    </nav>
+      {/* Right side actions */}
+      <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+        {/* AI Chat toggle */}
+        <button
+          onClick={onToggleChat}
+          style={{
+            padding: "7px 14px",
+            borderRadius: "8px",
+            border: `1px solid ${chatOpen ? theme.accentLight + "50" : theme.navBorder}`,
+            background: chatOpen ? theme.navActive : "transparent",
+            color: chatOpen ? theme.navActiveText : theme.navLink,
+            fontSize: "13px",
+            fontWeight: 600,
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            gap: "6px",
+            transition: "all 0.2s ease",
+          }}
+        >
+          💬 AI Chat
+        </button>
+
+        {/* Theme toggle */}
+        <button
+          onClick={toggleTheme}
+          style={{
+            width: "34px",
+            height: "34px",
+            borderRadius: "8px",
+            border: `1px solid ${theme.navBorder}`,
+            background: "transparent",
+            color: theme.navLink,
+            fontSize: "16px",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            transition: "all 0.2s ease",
+          }}
+        >
+          {isDark ? "☀️" : "🌙"}
+        </button>
+
+        {/* Logout */}
+        <button
+          onClick={onLogout}
+          style={{
+            padding: "7px 12px",
+            borderRadius: "8px",
+            border: `1px solid ${theme.navBorder}`,
+            background: "transparent",
+            color: theme.textMuted,
+            fontSize: "12px",
+            fontWeight: 600,
+            cursor: "pointer",
+            transition: "all 0.2s ease",
+          }}
+        >
+          Logout
+        </button>
+      </div>
+    </header>
   );
 }

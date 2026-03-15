@@ -1,92 +1,74 @@
 import React, { useState, useEffect } from "react";
-import { useTheme } from "./context/ThemeContext";
-import LoginPage from "./pages/LoginPage";
+import { useTheme } from "./themes/ThemeContext";
+import AuthPage from "./pages/AuthPage";
 import Navbar from "./components/Navbar";
-import StudentDashboard from "./pages/StudentDashboard";
-import WorkDashboard from "./pages/WorkDashboard";
-import ChatPage from "./pages/ChatPage";
-import StressDNAPage from "./pages/StressDNAPage";
-import MoodPage from "./pages/MoodPage";
-import SleepPage from "./pages/SleepPage";
-import StudyPlanPage from "./pages/StudyPlanPage";
-import MeetingsPage from "./pages/MeetingsPage";
-import WorkLifePage from "./pages/WorkLifePage";
-import WeekPrepPage from "./pages/WeekPrepPage";
-import GamesPage from "./pages/GamesPage";
+import Chatbot from "./components/Chatbot";
+import Dashboard from "./features/Dashboard";
+import Games from "./features/Games";
+import Camera from "./features/Camera";
+import Placeholder from "./features/Placeholder";
 
 export default function App() {
-  const [mode, setMode] = useState(null);
-  const [page, setPage] = useState("dashboard");
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [active, setActive] = useState("dashboard");
+  const [chatOpen, setChatOpen] = useState(false);
   const { theme, isDark } = useTheme();
 
   useEffect(() => {
-    document.body.className = isDark ? "" : "light-mode";
-    document.body.style.background = isDark ? theme.bg : "";
-    if (!isDark) {
-      document.body.style.background = "#e8eaf6";
-      document.body.style.backgroundImage = "linear-gradient(135deg, #e8eaf6 0%, #f3e5f5 30%, #e0f2f1 60%, #fce4ec 100%)";
-      document.body.style.backgroundAttachment = "fixed";
-    } else {
-      document.body.style.backgroundImage = "none";
-    }
+    document.body.style.background = theme.bg;
+    document.body.style.color = theme.textPrimary;
   }, [isDark, theme]);
 
-  if (!mode) {
-    return <LoginPage onLogin={(m) => { setMode(m); setPage("dashboard"); }} />;
+  if (!loggedIn) {
+    return <AuthPage onLogin={() => setLoggedIn(true)} />;
   }
 
-  const renderPage = () => {
-    if (mode === "academic") {
-      switch (page) {
-        case "dashboard": return <StudentDashboard />;
-        case "studyplan": return <StudyPlanPage />;
-        case "mood": return <MoodPage />;
-        case "sleep": return <SleepPage />;
-        case "dna": return <StressDNAPage mode={mode} />;
-        case "games": return <GamesPage />;
-        case "chat": return <ChatPage mode={mode} />;
-        default: return <StudentDashboard />;
-      }
-    } else {
-      switch (page) {
-        case "dashboard": return <WorkDashboard />;
-        case "meetings": return <MeetingsPage />;
-        case "worklife": return <WorkLifePage />;
-        case "weekprep": return <WeekPrepPage />;
-        case "dna": return <StressDNAPage mode={mode} />;
-        case "games": return <GamesPage />;
-        case "chat": return <ChatPage mode={mode} />;
-        default: return <WorkDashboard />;
-      }
+  const renderFeature = () => {
+    switch (active) {
+      case "dashboard": return <Dashboard />;
+      case "games":     return <Games />;
+      case "camera":    return <Camera />;
+      case "explore":   return <Placeholder />;
+      default:          return <Dashboard />;
     }
   };
 
   return (
     <div style={{
       display: "flex",
-      minHeight: "100vh",
-      background: isDark ? theme.bg : "transparent",
-      fontFamily: "'Segoe UI', system-ui, -apple-system, sans-serif",
-      transition: "all 0.4s ease",
+      flexDirection: "column",
+      height: "100vh",
+      background: theme.bg,
+      fontFamily: "'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif",
+      transition: "background 0.3s ease",
+      overflow: "hidden",
     }}>
+      {/* Top Navbar */}
       <Navbar
-        mode={mode}
-        activePage={page}
-        onNavigate={setPage}
-        onLogout={() => { setMode(null); setPage("dashboard"); }}
+        active={active}
+        onNavigate={setActive}
+        onLogout={() => { setLoggedIn(false); setActive("dashboard"); setChatOpen(false); }}
+        chatOpen={chatOpen}
+        onToggleChat={() => setChatOpen((p) => !p)}
       />
-      <main style={{
-        flex: 1,
-        overflowY: "auto",
-      }}>
-        <div style={{
-          padding: "32px",
-          maxWidth: "1100px",
-          animation: "fadeIn 0.4s ease",
+
+      {/* Body: main content + right chat panel */}
+      <div style={{ display: "flex", flex: 1, overflow: "hidden" }}>
+        {/* Main content */}
+        <main style={{
+          flex: 1,
+          overflowY: "auto",
+          padding: "28px 32px",
+          boxSizing: "border-box",
+          transition: "all 0.3s ease",
+          animation: "fadeIn 0.3s ease",
         }}>
-          {renderPage()}
-        </div>
-      </main>
+          {renderFeature()}
+        </main>
+
+        {/* Right chat panel */}
+        <Chatbot open={chatOpen} onClose={() => setChatOpen(false)} />
+      </div>
     </div>
   );
 }
