@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
-// const connectDB = require('./db/index');
+const connectDB = require('./db/index');
 const chatRoutes = require('./routes/chat.routes');
 const gamesRouter = require('./routes/games.routes');
 const stressRouter = require('./routes/stress.routes');
@@ -15,7 +15,7 @@ app.use(cors());
 app.use(express.json());
 
 // Connect to MongoDB (disabled for local demo; only AI endpoints are required)
-// connectDB();
+connectDB();
 
 // Routes
 app.use('/api/chat', chatRoutes);
